@@ -16,7 +16,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #131211;
     --surface: #1b1a18;
     --border: #2e2b28;
@@ -29,6 +29,20 @@
     --code-text: #f2f0ed;
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.35);
   }
+}
+
+:root[data-theme="dark"] {
+  --bg: #131211;
+  --surface: #1b1a18;
+  --border: #2e2b28;
+  --text: #f2f0ed;
+  --text-muted: #9c988f;
+  --accent: #a496ff;
+  --accent-ink: #16142b;
+  --accent-soft: #241f3d;
+  --code-bg: #0e0d0c;
+  --code-text: #f2f0ed;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.35);
 }
 
 * { box-sizing: border-box; }
@@ -113,6 +127,38 @@ a { color: inherit; }
   background: var(--accent);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.theme-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
+  flex: none;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.theme-toggle:hover { color: var(--text); }
+.theme-toggle svg { width: 16px; height: 16px; }
+.theme-toggle .icon-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: block; }
+}
+
 /* ---------- Hero / headers ---------- */
 .hero {
   padding: 96px 0 64px;
@@ -141,10 +187,19 @@ h1 {
   font-weight: 650;
 }
 
-.lede {
-  font-size: 18px;
-  color: var(--text-muted);
+.tagline {
+  font-size: 19px;
+  color: var(--text);
   max-width: 620px;
+  margin: 0 0 14px;
+  font-weight: 550;
+  letter-spacing: -0.01em;
+}
+
+.lede {
+  font-size: 16.5px;
+  color: var(--text-muted);
+  max-width: 600px;
   margin: 0 0 32px;
 }
 
@@ -193,67 +248,102 @@ section { padding: 8px 0 64px; }
   margin: 0 0 20px;
 }
 
-.grid-3 {
+.grid-2 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  margin-bottom: 16px;
 }
 
-@media (max-width: 760px) {
-  .grid-3 { grid-template-columns: 1fr; }
+@media (max-width: 700px) {
+  .grid-2 { grid-template-columns: 1fr; }
 }
 
 .feature-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 24px;
+  padding: 26px;
 }
 
-.feature-card .icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: var(--accent-soft);
+.feature-card .index {
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
   color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  font-size: 16px;
+  margin-bottom: 12px;
 }
 
 .feature-card h3 { font-size: 16px; margin: 0 0 8px; letter-spacing: -0.01em; }
 .feature-card p { font-size: 14.5px; color: var(--text-muted); margin: 0; }
 
-/* ---------- Filter pills ---------- */
-.filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 36px;
-}
-
-.pill {
-  border: 1px solid var(--border);
+/* ---------- Contact card ---------- */
+.contact-card {
   background: var(--surface);
-  color: var(--text-muted);
-  font-size: 13px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+}
+
+.contact-card .index {
+  font-size: 12.5px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.contact-card h3 { font-size: 16px; margin: 0 0 6px; letter-spacing: -0.01em; }
+.contact-card > p { font-size: 14.5px; color: var(--text-muted); margin: 0 0 20px; max-width: 520px; }
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+
+.contact-form label {
+  font-size: 12.5px;
   font-weight: 600;
-  padding: 7px 14px;
-  border-radius: 999px;
-  cursor: pointer;
+  color: var(--text-muted);
+  margin-bottom: -6px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 14.5px;
+  color: var(--text);
   font-family: inherit;
-  transition: all 0.15s ease;
+  resize: vertical;
 }
 
-.pill:hover { color: var(--text); }
-
-.pill.active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-ink);
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
+
+.contact-form textarea { min-height: 96px; }
+
+.contact-form .contact-submit-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.contact-status {
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.contact-status.is-error { color: #c0392b; }
+.contact-status.is-ok { color: #1a8a4a; }
 
 /* ---------- Skill cards ---------- */
 .skill-list { display: flex; flex-direction: column; gap: 14px; }
@@ -288,9 +378,8 @@ section { padding: 8px 0 64px; }
   font-size: 14.5px;
   color: var(--text-muted);
   max-width: 560px;
+  white-space: pre-line;
 }
-
-.tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
 
 .tag {
   font-size: 11.5px;
@@ -357,23 +446,6 @@ section { padding: 8px 0 64px; }
   word-break: break-word;
 }
 
-.copy-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--code-text);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 7px;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 6px 10px;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.copy-btn:hover { background: rgba(255, 255, 255, 0.18); }
-
 /* ---------- Favorites ---------- */
 .fav-grid {
   display: grid;
@@ -401,6 +473,8 @@ section { padding: 8px 0 64px; }
   justify-content: space-between;
   gap: 12px;
 }
+
+.fav-card .tag { align-self: flex-start; }
 
 .fav-card h3 { margin: 0; font-size: 16px; letter-spacing: -0.01em; }
 

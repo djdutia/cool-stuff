@@ -11,9 +11,22 @@ function escapeHtml(str) {
   });
 }
 
+function initThemeToggle() {
+  var btn = document.getElementById("theme-toggle");
+  if (!btn) return;
+  btn.addEventListener("click", function () {
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme");
+    var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    var isDark = current ? current === "dark" : systemDark;
+    var next = isDark ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("theme", next); } catch (e) {}
+  });
+}
+
 function renderSkills() {
   var list = document.getElementById("skill-list");
-  var filterRow = document.getElementById("filter-row");
   if (!list || typeof SKILLS === "undefined") return;
 
   if (!SKILLS.length) {
@@ -21,71 +34,33 @@ function renderSkills() {
     return;
   }
 
-  var tags = Array.from(new Set(SKILLS.flatMap(function (s) { return s.tags; }))).sort();
-  if (filterRow) {
-    filterRow.innerHTML =
-      '<button class="pill active" data-tag="all">All</button>' +
-      tags.map(function (t) { return '<button class="pill" data-tag="' + escapeHtml(t) + '">' + escapeHtml(t) + "</button>"; }).join("");
-  }
+  list.innerHTML = SKILLS.map(function (s) {
+    return (
+      '<article class="skill-card" data-id="' + s.id + '">' +
+        '<div class="skill-card-head">' +
+          '<div class="skill-card-title">' +
+            "<h3>" + escapeHtml(s.title) + "</h3>" +
+            "<p>" + escapeHtml(s.description) + "</p>" +
+          "</div>" +
+          '<div class="skill-card-actions">' +
+            (s.downloadUrl ? '<a class="btn btn-primary btn-sm" href="' + escapeHtml(s.downloadUrl) + '" download onclick="event.stopPropagation()">Download &#8595;</a>' : "") +
+            '<div class="chev">&#9662;</div>' +
+          "</div>" +
+        "</div>" +
+        '<div class="skill-card-body">' +
+          '<div class="code-block">' +
+            "<pre><code>" + escapeHtml(s.content) + "</code></pre>" +
+          "</div>" +
+        "</div>" +
+      "</article>"
+    );
+  }).join("");
 
-  function draw(activeTag) {
-    var items = SKILLS.filter(function (s) { return activeTag === "all" || s.tags.indexOf(activeTag) !== -1; });
-    list.innerHTML = items
-      .map(function (s) {
-        return (
-          '<article class="skill-card" data-id="' + s.id + '">' +
-            '<div class="skill-card-head">' +
-              '<div class="skill-card-title">' +
-                "<h3>" + escapeHtml(s.title) + "</h3>" +
-                "<p>" + escapeHtml(s.description) + "</p>" +
-                '<div class="tag-row">' + s.tags.map(function (t) { return '<span class="tag">' + escapeHtml(t) + "</span>"; }).join("") + "</div>" +
-              "</div>" +
-              '<div class="skill-card-actions">' +
-                (s.downloadUrl ? '<a class="btn btn-secondary btn-sm" href="' + escapeHtml(s.downloadUrl) + '" download onclick="event.stopPropagation()">Download &#8595;</a>' : "") +
-                '<div class="chev">&#9662;</div>' +
-              "</div>" +
-            "</div>" +
-            '<div class="skill-card-body">' +
-              '<div class="code-block">' +
-                '<button class="copy-btn" type="button">Copy</button>' +
-                "<pre><code>" + escapeHtml(s.content) + "</code></pre>" +
-              "</div>" +
-            "</div>" +
-          "</article>"
-        );
-      })
-      .join("");
-
-    list.querySelectorAll(".skill-card-head").forEach(function (head) {
-      head.addEventListener("click", function () {
-        head.closest(".skill-card").classList.toggle("open");
-      });
+  list.querySelectorAll(".skill-card-head").forEach(function (head) {
+    head.addEventListener("click", function () {
+      head.closest(".skill-card").classList.toggle("open");
     });
-
-    list.querySelectorAll(".copy-btn").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        var code = btn.parentElement.querySelector("code").textContent;
-        navigator.clipboard.writeText(code).then(function () {
-          var original = btn.textContent;
-          btn.textContent = "Copied!";
-          setTimeout(function () { btn.textContent = original; }, 1500);
-        });
-      });
-    });
-  }
-
-  draw("all");
-
-  if (filterRow) {
-    filterRow.addEventListener("click", function (e) {
-      var btn = e.target.closest(".pill");
-      if (!btn) return;
-      filterRow.querySelectorAll(".pill").forEach(function (p) { p.classList.remove("active"); });
-      btn.classList.add("active");
-      draw(btn.getAttribute("data-tag"));
-    });
-  }
+  });
 }
 
 function renderFavorites() {
@@ -111,8 +86,62 @@ function renderFavorites() {
   }).join("");
 }
 
+// Posted straight from the browser to FormSubmit's "invisible email" endpoint —
+// FORMSUBMIT_HASH is a random token FormSubmit issues once the owner's email
+// is confirmed, so it reveals nothing about the actual address. See README
+// for the one-time setup that produces this value.
+var FORMSUBMIT_HASH = "REPLACE_WITH_FORMSUBMIT_HASH";
+
+function initContactForm() {
+  var form = document.getElementById("contact-form");
+  if (!form) return;
+  var status = document.getElementById("contact-status");
+  var submitBtn = form.querySelector("button[type=submit]");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = form.elements["email"].value.trim();
+    var message = form.elements["message"].value.trim();
+
+    status.textContent = "Sending…";
+    status.className = "contact-status";
+    submitBtn.disabled = true;
+
+    fetch("https://formsubmit.co/ajax/" + FORMSUBMIT_HASH, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        _subject: "New message from People. Data. AI",
+        _template: "table",
+        "Reply-to email": email,
+        Message: message,
+      }),
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data && data.success === "true") {
+          status.textContent = "Sent — thanks for the note.";
+          status.className = "contact-status is-ok";
+          form.reset();
+        } else {
+          status.textContent = "Something went wrong. Please try again.";
+          status.className = "contact-status is-error";
+        }
+      })
+      .catch(function () {
+        status.textContent = "Something went wrong. Please try again.";
+        status.className = "contact-status is-error";
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+      });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   setActiveNav();
+  initThemeToggle();
   renderSkills();
   renderFavorites();
+  initContactForm();
 });

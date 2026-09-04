@@ -1,15 +1,14 @@
 // Add a new skill by copying an object below and editing it.
-// `content` is the exact skill file text people will see and copy —
+// `content` is the exact skill file text shown in the expandable preview —
 // paste your real SKILL.md / prompt content in there, using \n for new lines
 // or backtick template strings for multi-line text (as shown below).
-// `downloadUrl` (optional) points at a downloadable .skill package placed in /downloads.
+// `downloadUrl` points at the downloadable .skill package placed in /downloads.
 const SKILLS = [
   {
     id: "hiring-quality-audit",
     title: "Hiring Quality Audit",
-    tags: ["Analytics", "Interview Validity", "Attrition"],
     description:
-      "Guides an HR/TA person step by step through auditing whether their interview process actually predicts on-the-job performance, and through FY-wise early vs overall attrition with a regret split. Works with any ATS and any HRIS.",
+      "Quality of hire is routinely overlooked under the assumption that hiring ability is intuitive. Interviewers ask seemingly \"cool\" questions, puzzles that have no relevance to the role and leave the interview amazed at their own skills. But does it lead to good quality-of-hire?\n\nThis free, process-agnostic skill helps you measure the true predictive power of your interviews, benchmark recruiter effectiveness, and get clear visibility into what's driving your talent outcomes.",
     dateAdded: "2026-09-04",
     downloadUrl: "downloads/hiring-quality-audit.skill",
     content: `---
