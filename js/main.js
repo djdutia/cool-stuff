@@ -40,7 +40,10 @@ function renderSkills() {
                 "<p>" + escapeHtml(s.description) + "</p>" +
                 '<div class="tag-row">' + s.tags.map(function (t) { return '<span class="tag">' + escapeHtml(t) + "</span>"; }).join("") + "</div>" +
               "</div>" +
-              '<div class="chev">&#9662;</div>' +
+              '<div class="skill-card-actions">' +
+                (s.downloadUrl ? '<a class="btn btn-secondary btn-sm" href="' + escapeHtml(s.downloadUrl) + '" download onclick="event.stopPropagation()">Download &#8595;</a>' : "") +
+                '<div class="chev">&#9662;</div>' +
+              "</div>" +
             "</div>" +
             '<div class="skill-card-body">' +
               '<div class="code-block">' +

@@ -303,6 +303,18 @@ section { padding: 8px 0 64px; }
   border-radius: 999px;
 }
 
+.skill-card-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 13px;
+}
+
 .chev {
   flex: none;
   width: 28px;
@@ -315,7 +327,6 @@ section { padding: 8px 0 64px; }
   font-size: 13px;
   color: var(--text-muted);
   transition: transform 0.2s ease;
-  margin-top: 2px;
 }
 
 .skill-card.open .chev { transform: rotate(180deg); }
