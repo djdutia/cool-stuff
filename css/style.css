@@ -187,15 +187,6 @@ h1 {
   font-weight: 650;
 }
 
-.tagline {
-  font-size: 19px;
-  color: var(--text);
-  max-width: 620px;
-  margin: 0 0 14px;
-  font-weight: 550;
-  letter-spacing: -0.01em;
-}
-
 .lede {
   font-size: 16.5px;
   color: var(--text-muted);
