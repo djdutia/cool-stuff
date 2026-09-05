@@ -96,7 +96,9 @@ function renderFavorites() {
   }).join("");
 }
 
-var FORMSUBMIT_HASH = "REPLACE_WITH_FORMSUBMIT_HASH";
+// FormSubmit's "invisible email" alias — stands in for the owner's real
+// address, which never appears in the page source or this repo.
+var FORMSUBMIT_HASH = "fa6e138725bb56af9f10a8b52b06fe0b";
 
 function initContactForm() {
   var form = document.getElementById("contact-form");

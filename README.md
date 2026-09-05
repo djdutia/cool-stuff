@@ -41,16 +41,14 @@ so visitors never see it, and there's no server involved (a plain server-side
 proxy was tried first, but Vercel's serverless IPs get stopped by
 FormSubmit's Cloudflare bot check; a real browser request doesn't).
 
-**One-time setup, done once by the site owner:**
-1. Submit anything through the form once (or POST directly to
-   `https://formsubmit.co/ajax/you@example.com`). FormSubmit emails a
-   confirmation link to that address.
-2. Click "Confirm". FormSubmit's response (and the confirmation page) then
-   includes a random string — this is the "invisible email" token.
-3. Open `js/main.js` and replace `REPLACE_WITH_FORMSUBMIT_HASH` (near the
-   top, in `FORMSUBMIT_HASH`) with that token, then redeploy.
+This is set up and live — `FORMSUBMIT_HASH` in `js/main.js` holds the alias
+token, and submissions arrive in the owner's inbox with the sender's address
+in the "Reply-to email" field, so you can just hit reply.
 
-Until that's done, the form will show "Something went wrong" on submit.
+If the alias ever attracts spam, revoke it with FormSubmit, activate a new
+address, and swap the token in `js/main.js`. The setup flow is: submit the
+form once, click "Activate Form" in the email FormSubmit sends, and they mail
+you the random string to use as the token.
 
 ## Dark / light mode
 
