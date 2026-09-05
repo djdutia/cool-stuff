@@ -125,20 +125,27 @@ function initContactForm() {
         Message: message,
       }),
     })
-      .then(function (res) { return res.json(); })
+      .then(function (res) {
+        return res.json().catch(function () { return null; });
+      })
       .then(function (data) {
         if (data && data.success === "true") {
           status.textContent = "Sent — thanks for the note.";
           status.className = "status is-ok";
           form.reset();
         } else {
-          status.textContent = "Something went wrong. Please try again.";
+          // Reached the service, but it rejected the submission.
+          status.textContent = "The mail service turned that down. Please try again in a minute.";
           status.className = "status is-error";
+          console.error("[contact] service rejected the submission:", data);
         }
       })
-      .catch(function () {
-        status.textContent = "Something went wrong. Please try again.";
+      .catch(function (err) {
+        // The request never completed — almost always an ad blocker, privacy
+        // extension, or offline connection rather than a problem with the form.
+        status.textContent = "Couldn't reach the mail service — an ad blocker or privacy extension may be blocking it.";
         status.className = "status is-error";
+        console.error("[contact] request blocked or network failure:", err);
       })
       .finally(function () {
         submitBtn.disabled = false;
