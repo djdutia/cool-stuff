@@ -69,6 +69,12 @@ Then open http://localhost:8080.
 
 ## Deploying
 
-No framework to detect — Vercel serves the pages as static files. Every push
-to the connected Git branch deploys automatically once this project is
-linked to Vercel.
+The repo at `github.com/djdutia/cool-stuff` is connected to the Vercel project
+`hr-ai-skills-hub`, so **every push to `main` deploys automatically**. There is
+no build step — Vercel serves the pages as static files.
+
+To add a skill: drop the `.skill` package in `downloads/`, add its entry to
+`data/skills.js`, commit, and push. That's the whole release process.
+
+Commits are authored as `djdutia@users.noreply.github.com` (set in the repo's
+local git config) so the real address stays out of this public repo.
