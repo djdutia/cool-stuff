@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Other stuff | dhrumeel</title>
   <meta name="description" content="A few tools, reads, and other finds worth sharing." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%235b47e0'/></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='%23ab421f'/></svg>" />
   <script>
     (function () {
       try {
@@ -16,22 +16,22 @@
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-  <nav class="site-nav">
-    <div class="wrap">
-      <a class="brand" href="index.html"><span class="dot"></span>People. Data. AI</a>
-      <div class="nav-right">
-        <ul class="nav-links">
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a class="wordmark" href="index.html">People<b>.</b> Data<b>.</b> AI</a>
+      <div class="nav__right">
+        <ul class="nav__links">
           <li><a href="index.html" data-page="index.html">Home</a></li>
-          <li><a href="skills.html" data-page="skills.html">Claude Skills</a></li>
+          <li><a href="skills.html" data-page="skills.html"><span class="nav__long">Claude </span>Skills</a></li>
           <li><a href="favorites.html" data-page="favorites.html">Other stuff</a></li>
         </ul>
-        <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="2" x2="12" y2="4"></line><line x1="12" y1="20" x2="12" y2="22"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="2" y1="12" x2="4" y2="12"></line><line x1="20" y1="12" x2="22" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="12" r="4.25"></circle><line x1="12" y1="2.5" x2="12" y2="4.5"></line><line x1="12" y1="19.5" x2="12" y2="21.5"></line><line x1="4.6" y1="4.6" x2="6" y2="6"></line><line x1="18" y1="18" x2="19.4" y2="19.4"></line><line x1="2.5" y1="12" x2="4.5" y2="12"></line><line x1="19.5" y1="12" x2="21.5" y2="12"></line><line x1="4.6" y1="19.4" x2="6" y2="18"></line><line x1="18" y1="6" x2="19.4" y2="4.6"></line></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.3A8.5 8.5 0 1 1 10.7 3.5a6.8 6.8 0 0 0 9.8 9.8z"></path></svg>
         </button>
       </div>
     </div>
@@ -39,20 +39,20 @@
 
   <header class="page-header">
     <div class="wrap">
-      <h1>Other stuff</h1>
-      <p>Tools, reads, and other finds worth sharing — not always AI, not always HR.</p>
+      <h1 class="page-title rise">Other stuff</h1>
+      <p class="lede rise rise-2">Reads, tools, and other finds worth passing on — not always AI, not always HR.</p>
     </div>
   </header>
 
-  <section>
+  <main>
     <div class="wrap">
-      <div class="fav-grid" id="fav-grid"></div>
+      <div class="rows" id="fav-grid"></div>
     </div>
-  </section>
+  </main>
 
-  <footer>
-    <div class="wrap">
-      <span>&copy; <span id="year"></span> People. Data. AI</span>
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span>&copy; <span id="year"></span> Dhrumeel Dutia</span>
       <span>Built with Claude</span>
     </div>
   </footer>

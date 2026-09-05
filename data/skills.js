@@ -8,7 +8,7 @@ const SKILLS = [
     id: "hiring-quality-audit",
     title: "Hiring Quality Audit",
     description:
-      "Quality of hire is routinely overlooked under the assumption that hiring ability is intuitive. Interviewers ask seemingly \"cool\" questions, puzzles that have no relevance to the role and leave the interview amazed at their own skills. But does it lead to good quality-of-hire?\n\nThis free, process-agnostic skill helps you measure the true predictive power of your interviews, benchmark recruiter effectiveness, and get clear visibility into what's driving your talent outcomes.",
+      "Quality of hire is routinely overlooked under the assumption that hiring ability is intuitive. Interviewers ask seemingly “cool” questions, puzzles that have no relevance to the role and leave the interview amazed at their own skills. But does it lead to good quality-of-hire?\n\nThis free, process-agnostic skill helps you measure the true predictive power of your interviews, benchmark recruiter effectiveness, and get clear visibility into what’s driving your talent outcomes.",
     dateAdded: "2026-09-04",
     downloadUrl: "downloads/hiring-quality-audit.skill",
     content: `---

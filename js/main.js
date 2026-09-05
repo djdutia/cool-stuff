@@ -1,13 +1,20 @@
-function setActiveNav() {
-  var path = location.pathname.split("/").pop() || "index.html";
-  document.querySelectorAll(".nav-links a").forEach(function (a) {
-    if (a.getAttribute("data-page") === path) a.classList.add("active");
-  });
-}
-
 function escapeHtml(str) {
   return String(str).replace(/[&<>"']/g, function (c) {
     return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+function paragraphs(text) {
+  return String(text)
+    .split(/\n{2,}/)
+    .map(function (block) { return "<p>" + escapeHtml(block.trim()) + "</p>"; })
+    .join("");
+}
+
+function setActiveNav() {
+  var path = location.pathname.split("/").pop() || "index.html";
+  document.querySelectorAll(".nav__links a").forEach(function (a) {
+    if (a.getAttribute("data-page") === path) a.classList.add("is-active");
   });
 }
 
@@ -30,66 +37,67 @@ function renderSkills() {
   if (!list || typeof SKILLS === "undefined") return;
 
   if (!SKILLS.length) {
-    list.innerHTML = '<div class="empty">No skills posted yet — check back soon.</div>';
+    list.innerHTML = '<p class="empty">No skills posted yet — check back soon.</p>';
     return;
   }
 
-  list.innerHTML = SKILLS.map(function (s) {
+  list.innerHTML = SKILLS.map(function (s, i) {
+    var previewId = "preview-" + s.id;
     return (
-      '<article class="skill-card" data-id="' + s.id + '">' +
-        '<div class="skill-card-head">' +
-          '<div class="skill-card-title">' +
-            "<h3>" + escapeHtml(s.title) + "</h3>" +
-            "<p>" + escapeHtml(s.description) + "</p>" +
-          "</div>" +
-          '<div class="skill-card-actions">' +
-            (s.downloadUrl ? '<a class="btn btn-primary btn-sm" href="' + escapeHtml(s.downloadUrl) + '" download onclick="event.stopPropagation()">Download &#8595;</a>' : "") +
-            '<div class="chev">&#9662;</div>' +
-          "</div>" +
+      '<article class="entry">' +
+        '<h2 class="entry__title">' + escapeHtml(s.title) + "</h2>" +
+        '<div class="entry__desc">' + paragraphs(s.description) + "</div>" +
+        '<div class="entry__actions">' +
+          (s.downloadUrl
+            ? '<a class="btn btn--sm" href="' + escapeHtml(s.downloadUrl) + '" download>Download the skill</a>'
+            : "") +
+          '<button class="disclosure" type="button" aria-expanded="false" aria-controls="' + previewId + '">' +
+            "Preview the file" +
+            '<span class="disclosure__chev" aria-hidden="true"></span>' +
+          "</button>" +
         "</div>" +
-        '<div class="skill-card-body">' +
-          '<div class="code-block">' +
-            "<pre><code>" + escapeHtml(s.content) + "</code></pre>" +
-          "</div>" +
+        '<div class="entry__preview" id="' + previewId + '" hidden>' +
+          '<pre class="manuscript"><code>' + escapeHtml(s.content) + "</code></pre>" +
         "</div>" +
       "</article>"
     );
   }).join("");
 
-  list.querySelectorAll(".skill-card-head").forEach(function (head) {
-    head.addEventListener("click", function () {
-      head.closest(".skill-card").classList.toggle("open");
+  list.querySelectorAll(".disclosure").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var panel = document.getElementById(btn.getAttribute("aria-controls"));
+      var open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+      panel.hidden = open;
     });
   });
 }
 
 function renderFavorites() {
-  var grid = document.getElementById("fav-grid");
-  if (!grid || typeof FAVORITES === "undefined") return;
+  var list = document.getElementById("fav-grid");
+  if (!list || typeof FAVORITES === "undefined") return;
 
   if (!FAVORITES.length) {
-    grid.innerHTML = '<div class="empty">No favorites posted yet — check back soon.</div>';
+    list.innerHTML = '<p class="empty">Nothing here yet — check back soon.</p>';
     return;
   }
 
-  grid.innerHTML = FAVORITES.map(function (f) {
-    return (
-      '<article class="fav-card">' +
-        '<div class="fav-card-top">' +
-          "<h3>" + escapeHtml(f.title) + "</h3>" +
-          (f.url ? '<a class="fav-link" href="' + escapeHtml(f.url) + '" target="_blank" rel="noopener">Visit &#8599;</a>' : "") +
-        "</div>" +
-        '<span class="tag">' + escapeHtml(f.category) + "</span>" +
-        "<p>" + escapeHtml(f.note) + "</p>" +
-      "</article>"
-    );
+  list.innerHTML = FAVORITES.map(function (f) {
+    var body =
+      '<div class="row__body">' +
+        '<h2 class="row__title">' + escapeHtml(f.title) + "</h2>" +
+        '<p class="row__note">' + escapeHtml(f.note) + "</p>" +
+      "</div>" +
+      '<span class="row__meta">' + escapeHtml(f.category) +
+        (f.url ? '<span class="row__arrow" aria-hidden="true">↗</span>' : "") +
+      "</span>";
+
+    return f.url
+      ? '<a class="row" href="' + escapeHtml(f.url) + '" target="_blank" rel="noopener">' + body + "</a>"
+      : '<div class="row">' + body + "</div>";
   }).join("");
 }
 
-// Posted straight from the browser to FormSubmit's "invisible email" endpoint —
-// FORMSUBMIT_HASH is a random token FormSubmit issues once the owner's email
-// is confirmed, so it reveals nothing about the actual address. See README
-// for the one-time setup that produces this value.
 var FORMSUBMIT_HASH = "REPLACE_WITH_FORMSUBMIT_HASH";
 
 function initContactForm() {
@@ -104,7 +112,7 @@ function initContactForm() {
     var message = form.elements["message"].value.trim();
 
     status.textContent = "Sending…";
-    status.className = "contact-status";
+    status.className = "status";
     submitBtn.disabled = true;
 
     fetch("https://formsubmit.co/ajax/" + FORMSUBMIT_HASH, {
@@ -121,16 +129,16 @@ function initContactForm() {
       .then(function (data) {
         if (data && data.success === "true") {
           status.textContent = "Sent — thanks for the note.";
-          status.className = "contact-status is-ok";
+          status.className = "status is-ok";
           form.reset();
         } else {
           status.textContent = "Something went wrong. Please try again.";
-          status.className = "contact-status is-error";
+          status.className = "status is-error";
         }
       })
       .catch(function () {
         status.textContent = "Something went wrong. Please try again.";
-        status.className = "contact-status is-error";
+        status.className = "status is-error";
       })
       .finally(function () {
         submitBtn.disabled = false;
