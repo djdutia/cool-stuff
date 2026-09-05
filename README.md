@@ -33,22 +33,20 @@ then edit the fields:
 Same idea in `data/favorites.js` — copy an object in the `FAVORITES` array
 and edit `title`, `category`, `note`, and optionally `url`.
 
-## The "Got thoughts?" contact box
+## Getting in touch
 
-The form on the home page posts straight from the browser to FormSubmit's
-"invisible email" endpoint — a random token stands in for the real address,
-so visitors never see it, and there's no server involved (a plain server-side
-proxy was tried first, but Vercel's serverless IPs get stopped by
-FormSubmit's Cloudflare bot check; a real browser request doesn't).
+The home page ends with a LinkedIn button rather than a contact form.
 
-This is set up and live — `FORMSUBMIT_HASH` in `js/main.js` holds the alias
-token, and submissions arrive in the owner's inbox with the sender's address
-in the "Reply-to email" field, so you can just hit reply.
+An email form lived here previously, routed through FormSubmit's "invisible
+email" alias so the address stayed out of the page source. It worked
+server-side but proved unreliable in real browsers — `formsubmit.co` sits on
+some tracker blocklists, so ad blockers and privacy extensions silently broke
+it for exactly the visitors most likely to be reading. A LinkedIn link has no
+third-party dependency that can fail, and nothing to keep activated.
 
-If the alias ever attracts spam, revoke it with FormSubmit, activate a new
-address, and swap the token in `js/main.js`. The setup flow is: submit the
-form once, click "Activate Form" in the email FormSubmit sends, and they mail
-you the random string to use as the token.
+If a form is ever wanted again, note that a Vercel serverless proxy is *not*
+a workaround: FormSubmit sits behind Cloudflare, which blocks requests from
+Vercel's serverless IPs.
 
 ## Dark / light mode
 

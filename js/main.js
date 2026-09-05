@@ -96,67 +96,9 @@ function renderFavorites() {
   }).join("");
 }
 
-// FormSubmit's "invisible email" alias — stands in for the owner's real
-// address, which never appears in the page source or this repo.
-var FORMSUBMIT_HASH = "fa6e138725bb56af9f10a8b52b06fe0b";
-
-function initContactForm() {
-  var form = document.getElementById("contact-form");
-  if (!form) return;
-  var status = document.getElementById("contact-status");
-  var submitBtn = form.querySelector("button[type=submit]");
-
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var email = form.elements["email"].value.trim();
-    var message = form.elements["message"].value.trim();
-
-    status.textContent = "Sending…";
-    status.className = "status";
-    submitBtn.disabled = true;
-
-    fetch("https://formsubmit.co/ajax/" + FORMSUBMIT_HASH, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
-      body: JSON.stringify({
-        _subject: "New message from People. Data. AI",
-        _template: "table",
-        "Reply-to email": email,
-        Message: message,
-      }),
-    })
-      .then(function (res) {
-        return res.json().catch(function () { return null; });
-      })
-      .then(function (data) {
-        if (data && data.success === "true") {
-          status.textContent = "Sent — thanks for the note.";
-          status.className = "status is-ok";
-          form.reset();
-        } else {
-          // Reached the service, but it rejected the submission.
-          status.textContent = "The mail service turned that down. Please try again in a minute.";
-          status.className = "status is-error";
-          console.error("[contact] service rejected the submission:", data);
-        }
-      })
-      .catch(function (err) {
-        // The request never completed — almost always an ad blocker, privacy
-        // extension, or offline connection rather than a problem with the form.
-        status.textContent = "Couldn't reach the mail service — an ad blocker or privacy extension may be blocking it.";
-        status.className = "status is-error";
-        console.error("[contact] request blocked or network failure:", err);
-      })
-      .finally(function () {
-        submitBtn.disabled = false;
-      });
-  });
-}
-
 document.addEventListener("DOMContentLoaded", function () {
   setActiveNav();
   initThemeToggle();
   renderSkills();
   renderFavorites();
-  initContactForm();
 });
