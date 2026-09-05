@@ -23,10 +23,8 @@ function initThemeToggle() {
   if (!btn) return;
   btn.addEventListener("click", function () {
     var root = document.documentElement;
-    var current = root.getAttribute("data-theme");
-    var systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    var isDark = current ? current === "dark" : systemDark;
-    var next = isDark ? "light" : "dark";
+    // Light is the default, so anything that isn't an explicit "dark" is light.
+    var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
     try { localStorage.setItem("theme", next); } catch (e) {}
   });
