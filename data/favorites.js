@@ -71,4 +71,18 @@ const FAVORITES = [
     note: "The benign violation theory of humour, and why jokes at work cut both ways — creativity and status on one side, normalised bad behaviour on the other.",
     url: "https://idealgas.substack.com/p/where-is-the-funny",
   },
+  {
+    id: "fallacy-of-third-person-view",
+    title: "The fallacy of “3rd person” view",
+    category: "Read",
+    note: "On watching from the outside versus actually joining in — and what the analytical distance quietly costs you.",
+    url: "https://grumpypanda.substack.com/p/the-fallacy-of-3rd-person-view",
+  },
+  {
+    id: "sage-of-good-times",
+    title: "The Sage of Good Times",
+    category: "Read",
+    note: "Two lessons on managing your own head: knowing when to cut losses on a passion project, and not letting old failures haunt the next decision.",
+    url: "https://grumpypanda.substack.com/p/the-sage-of-good-times",
+  },
 ];
