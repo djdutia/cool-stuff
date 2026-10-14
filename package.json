@@ -1,0 +1,9 @@
+{
+  "name": "hr-ai-skills-hub",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.133.0",
+    "@upstash/redis": "^1.39.0"
+  }
+}

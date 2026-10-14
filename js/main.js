@@ -49,6 +49,9 @@ function renderSkills() {
           (s.downloadUrl
             ? '<a class="btn btn--sm" href="' + escapeHtml(s.downloadUrl) + '" download>Download the skill</a>'
             : "") +
+          (s.tryUrl
+            ? '<a class="btn btn--sm btn--ghost" href="' + escapeHtml(s.tryUrl) + '">Try it on a JD</a>'
+            : "") +
           '<button class="disclosure" type="button" aria-expanded="false" aria-controls="' + previewId + '">' +
             "Preview the file" +
             '<span class="disclosure__chev" aria-hidden="true"></span>' +

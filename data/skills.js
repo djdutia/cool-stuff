@@ -11,6 +11,7 @@ const SKILLS = [
       "Most take-home tests fail in one of three ways: they are quizzes in disguise, so you learn who studied; they are free consulting on a live company problem; or they are unbounded, so whoever has the most free evenings wins. None of those tell you how someone decides.\n\nThis skill turns a job description into a work sample built around the role’s hardest recurring decision — constraints that genuinely pull against each other, more scope than the time allows, and a live debrief where the candidate defends what they chose and what they dropped. It also writes the half most teams skip: the evaluator pack, with scenario data, planted signals, an anchored rubric and the debrief guide.",
     dateAdded: "2026-10-03",
     downloadUrl: "downloads/work-sample-builder.skill",
+    tryUrl: "try.html",
     content: `---
 name: "work-sample-builder"
 description: "Turns a job description into a decision-forcing work sample test: a candidate brief plus a private evaluator pack with rubric, debrief guide and scenario data. Use for any take-home, case study, assessment task or hiring assignment."

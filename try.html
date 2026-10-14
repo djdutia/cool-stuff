@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Try Work Sample Builder | dhrumeel</title>
+  <meta name="description" content="Paste a job description and get a decision-forcing work sample: the candidate brief, the evaluator pack and the scenario materials." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='12' fill='%23ab421f'/></svg>" />
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav__inner">
+      <a class="wordmark" href="index.html">People<b>.</b> Data<b>.</b> AI</a>
+      <div class="nav__right">
+        <ul class="nav__links">
+          <li><a href="index.html" data-page="index.html">Home</a></li>
+          <li><a href="skills.html" data-page="skills.html" class="is-active"><span class="nav__long">Claude </span>Skills</a></li>
+          <li><a href="favorites.html" data-page="favorites.html">Other stuff</a></li>
+        </ul>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="12" cy="12" r="4.25"></circle><line x1="12" y1="2.5" x2="12" y2="4.5"></line><line x1="12" y1="19.5" x2="12" y2="21.5"></line><line x1="4.6" y1="4.6" x2="6" y2="6"></line><line x1="18" y1="18" x2="19.4" y2="19.4"></line><line x1="2.5" y1="12" x2="4.5" y2="12"></line><line x1="19.5" y1="12" x2="21.5" y2="12"></line><line x1="4.6" y1="19.4" x2="6" y2="18"></line><line x1="18" y1="6" x2="19.4" y2="4.6"></line></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.3A8.5 8.5 0 1 1 10.7 3.5a6.8 6.8 0 0 0 9.8 9.8z"></path></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="page-header">
+    <div class="wrap">
+      <p class="overline rise"><a href="skills.html">Claude Skills</a> / Work Sample Builder</p>
+      <h1 class="page-title rise">Try it on a real JD</h1>
+      <p class="lede rise rise-2">Paste a job description. In a few minutes you'll have the candidate brief, the evaluator pack and the scenario materials, each ready to save as a PDF.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <form class="try" id="try-form" novalidate>
+        <div class="field">
+          <div class="field__head">
+            <label class="field__label" for="jd">Job description</label>
+            <label class="upload">
+              <input type="file" id="jd-file" accept=".pdf,.docx,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown" />
+              <span>Upload a file</span>
+            </label>
+          </div>
+          <textarea id="jd" name="jd" rows="14" maxlength="12000" spellcheck="false" placeholder="Paste the full job description here, or upload a PDF, Word or text file."></textarea>
+          <div class="field__meta">
+            <span id="file-status" aria-live="polite"></span>
+            <span id="jd-count">0 / 12,000</span>
+          </div>
+        </div>
+
+        <div class="try__check" id="turnstile"></div>
+
+        <div class="try__actions">
+          <button class="btn" type="submit" id="run" disabled>Build the work sample</button>
+          <p class="try__quota" id="quota">Checking availability…</p>
+        </div>
+
+        <p class="notice" id="form-error" role="alert" hidden></p>
+
+        <p class="try__fineprint">
+          Your text goes to Anthropic's API to write the output; nothing is saved on this site. Leave out anything
+          confidential. The demo runs with no company context, so it states its assumptions. For a version shaped
+          to your company, <a href="skills.html">download the skill</a> and run it in your own Claude.
+        </p>
+      </form>
+
+      <section class="progress" id="progress" hidden aria-live="polite">
+        <ol class="steps">
+          <li data-step="thinking"><span class="steps__dot"></span>Reading the JD and designing the test</li>
+          <li data-step="brief"><span class="steps__dot"></span>Writing the candidate brief</li>
+          <li data-step="evaluator"><span class="steps__dot"></span>Writing the evaluator pack</li>
+          <li data-step="materials"><span class="steps__dot"></span>Building the scenario materials</li>
+        </ol>
+        <p class="progress__time" id="elapsed"></p>
+      </section>
+
+      <section class="results" id="results" hidden>
+        <div class="results__bar">
+          <div class="tabs" role="tablist" aria-label="Documents">
+            <button class="tab" role="tab" type="button" id="tab-brief" aria-controls="doc-brief" aria-selected="true">Candidate brief</button>
+            <button class="tab" role="tab" type="button" id="tab-evaluator" aria-controls="doc-evaluator" aria-selected="false">Evaluator pack</button>
+            <button class="tab" role="tab" type="button" id="tab-materials" aria-controls="doc-materials" aria-selected="false">Scenario materials</button>
+          </div>
+          <button class="btn btn--sm" type="button" id="save-pdf" disabled>Save as PDF</button>
+        </div>
+        <p class="notice" id="result-notice" hidden></p>
+        <article class="doc" id="doc-brief" role="tabpanel" aria-labelledby="tab-brief" data-name="Candidate brief"><div class="doc__body"></div></article>
+        <article class="doc" id="doc-evaluator" role="tabpanel" aria-labelledby="tab-evaluator" data-name="Evaluator pack" hidden><div class="doc__body"></div></article>
+        <article class="doc" id="doc-materials" role="tabpanel" aria-labelledby="tab-materials" data-name="Scenario materials" hidden><div class="doc__body"></div></article>
+        <p class="results__hint">In the print window, choose <strong>Save as PDF</strong> as the destination.</p>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span>&copy; <span id="year"></span> Dhrumeel Dutia</span>
+      <span>Built with Claude</span>
+    </div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/try.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>
